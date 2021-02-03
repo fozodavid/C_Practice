@@ -8,27 +8,31 @@ int cmpfunc(const void * a, const void * b) {
 }
 
 int main() {
-  char numbers[LENGTH];
+  char input[LENGTH];
+  int n[LENGTH];
 
   printf("Input an integer created by 8 numbers (0 to 9):\n");
-  int i = 0;
-  scanf("%", numbers);
-  printf("before qsort: %s\n", numbers);
+  scanf("%s", input);
 
-  qsort(numbers, LENGTH, sizeof(char), cmpfunc);
-  printf("after qsort: %s\n", numbers);
+  int i = 0;
+  while (i < LENGTH) {
+    sscanf(input[i], "%d", &n[i]);
+    i++;
+  }
+
+  qsort(n, LENGTH, sizeof(int), cmpfunc);
 
   int big = 0, small = 0;
   i = 0;
   while (i < LENGTH) {
-    big += pow(10, i) * (int)numbers[i];
+    big += pow(10, i) * n[i];
     i++;
   }
 
   i = LENGTH - 1;
   int k = 0;
   while (i >= 0) {
-    small += pow(10, i) * (int)numbers[k];
+    small += pow(10, i) * n[k];
     k++;
     i--;
   }
