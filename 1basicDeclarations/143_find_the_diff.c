@@ -1,42 +1,49 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#define LENGTH 8
-
-int cmpfunc(const void * a, const void * b) {
-  return ( *(int*)a - *(int*)b);
-}
 
 int main() {
-  char input[LENGTH];
-  int n[LENGTH];
-
+  int max, min, input, t;
   printf("Input an integer created by 8 numbers (0 to 9):\n");
-  scanf("%s", input);
+  scanf("%d", & input);
+  int i, j, str[8] = {
+    0
+  };
 
-  int i = 0;
-  while (i < LENGTH) {
-    sscanf(input[i], "%d", &n[i]);
-    i++;
+  for (i = 0; input != 0; i++) {
+    str[i] = input % 10;
+    input /= 10;
   }
 
-  qsort(n, LENGTH, sizeof(int), cmpfunc);
-
-  int big = 0, small = 0;
-  i = 0;
-  while (i < LENGTH) {
-    big += pow(10, i) * n[i];
-    i++;
+  // Sort
+  for (i = 0; i < 8; i++) {
+    for (j = 1; j + i < 8; j++) {
+      if (str[j - 1] < str[j]) {
+        t = str[j - 1];
+        str[j - 1] = str[j];
+        str[j] = t;
+      }
+    }
   }
 
-  i = LENGTH - 1;
-  int k = 0;
-  while (i >= 0) {
-    small += pow(10, i) * n[k];
-    k++;
-    i--;
+  max = 0;
+  for (i = 0; i < 8; i++) {
+    max *= 10;
+    max += str[i];
   }
 
-  printf("The difference between the largest integer and the smallest:\n%d - %d = %d",
-      big, small, big - small);
+  // Turn
+  for (i = 0; i * 2 < 8; i++) {
+    t = str[i];
+    str[i] = str[7 - i];
+    str[7 - i] = t;
+  }
+
+  min = 0;
+  for (i = 0; i < 8; i++) {
+    min *= 10;
+    min += str[i];
+  }
+  printf("\nThe difference between the largest integer and the smallest integer.\n");
+  printf("%d - %d = %d\n", max, min, max - min);
+
+  return 0;
 }
