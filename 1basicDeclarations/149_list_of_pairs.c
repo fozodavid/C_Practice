@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#define DICT_LEN 20
+#define DICT_LEN 10
 #define MEMBER_LEN 10
 
 struct entry {
@@ -16,6 +16,7 @@ int main() {
   // Initialization
   while (i < DICT_LEN) {
     dictionary[i].word[0] = 0;
+    k = 0;
     while (k < MEMBER_LEN) {
       dictionary[i].pagenum[k] = -1;
       k++;
@@ -37,14 +38,16 @@ int main() {
 
     int found = 0;
     k = 0;
+    // registering
     while (k < DICT_LEN && dictionary[k].pagenum[0] > -1) {
-      if (dictionary[k].word == word) {
+      if (!strcmp(dictionary[k].word, word)) { // is it possible to compare two strings?
+        found = 1;
+        j = 0;
         while (j < MEMBER_LEN && !dictionary[k].pagenum[j]) {
           j++;
         }
       }
       dictionary[k].pagenum[j] = pagenum;
-      j = 0;
       k++;
     }
     if (!found) {
@@ -62,11 +65,13 @@ int main() {
   // print
   printf("\nWord and page_no number in alphabetical order:\n");
   i = 0;
-  k = 0;
   while (i < DICT_LEN && dictionary[i].pagenum[0] > -1) {
     printf("%s\n", dictionary[i].word);
+    k = 0;
     while (k < MEMBER_LEN && dictionary[i].pagenum[k]) {
-      printf("%d ", * dictionary[i].pagenum);
+      if (dictionary[i].pagenum[k] != -1) {
+        printf("%d ", dictionary[i].pagenum[k]);
+      }
       k++;
     }
     printf("\n");
