@@ -13,6 +13,7 @@ int main() {
   int i = 0;
   int k = 0;
   int j = 0;
+  int f = 0;
   // Initialization
   while (i < DICT_LEN) {
     dictionary[i].word[0] = 0;
@@ -52,14 +53,20 @@ int main() {
     }
     if (!found) {
       strcpy(dictionary[k].word, word);
-      dictionary[k].pagenum[0] = pagenum;
+      f = 0;
+      while (f < MEMBER_LEN) {
+        if (dictionary[k].pagenum[f] != -1) {
+          dictionary[k].pagenum[f] = pagenum;
+          break;
+        }
+        f++;
+      }
     }
     // search for same word
 
     word[0] = '\0';
     i++;
   }
-
 
 
   // print
