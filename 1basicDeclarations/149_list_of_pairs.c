@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
 #define DICT_LEN 10
 #define MEMBER_LEN 10
 
@@ -7,6 +9,24 @@ struct entry {
   char word[MEMBER_LEN];
   int pagenum[MEMBER_LEN];
 };
+
+int cmpfunc(struct entry *a, struct entry *b) {
+  return strcmp(a -> word, b -> word);
+}
+
+void initiate_dict(struct entry * dictionary) {
+  int i, k;
+  i = 0;
+  while (i < DICT_LEN) {
+    dictionary[i].word[0] = 0;
+    k = 0;
+    while (k < MEMBER_LEN) {
+      dictionary[i].pagenum[k] = -1;
+      k++;
+    }
+    i++;
+  }
+}
 
 void register_dict(struct entry * dictionary) {
   int i, j, k, pagenum, found, finished;
@@ -54,8 +74,9 @@ void register_dict(struct entry * dictionary) {
     word[0] = 0;
     i++;
   }
-}
 
+  qsort(dictionary, MEMBER_LEN, sizeof(struct entry), cmpfunc);
+}
 void print_dict(struct entry * dictionary) {
   int i, k;
   // print
@@ -71,20 +92,6 @@ void print_dict(struct entry * dictionary) {
       k++;
     }
     printf("\n");
-    i++;
-  }
-}
-
-void initiate_dict(struct entry * dictionary) {
-  int i, k;
-  i = 0;
-  while (i < DICT_LEN) {
-    dictionary[i].word[0] = 0;
-    k = 0;
-    while (k < MEMBER_LEN) {
-      dictionary[i].pagenum[k] = -1;
-      k++;
-    }
     i++;
   }
 }
