@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#define DICT_LEN 20
+#include <stdlib.h>
+
+#define DICT_LEN 10
 #define MEMBER_LEN 10
 
 struct entry {
@@ -8,70 +10,99 @@ struct entry {
   int pagenum[MEMBER_LEN];
 };
 
-int main() {
-  struct entry dictionary[DICT_LEN];
-  int i = 0;
-  int k = 0;
-  int j = 0;
-  // Initialization
+int cmpfunc(struct entry *a, struct entry *b) {
+  return strcmp(a -> word, b -> word);
+}
+
+void initiate_dict(struct entry * dictionary) {
+  int i, k;
+  i = 0;
   while (i < DICT_LEN) {
     dictionary[i].word[0] = 0;
+    k = 0;
     while (k < MEMBER_LEN) {
       dictionary[i].pagenum[k] = -1;
       k++;
     }
     i++;
   }
+}
+
+void register_dict(struct entry * dictionary) {
+  int i, j, k, pagenum, found, finished;
+  char word[MEMBER_LEN];
 
   printf("Input pairs of a word and a page_no number:\n");
 
-  int finished = 0;
-  char word[MEMBER_LEN];
-  int pagenum;
   i = 0;
+  finished = 0;
   while (i < DICT_LEN && !finished) {
     scanf("%s", word);
     scanf("%d", &pagenum);
 
-    if (word[0] == '\0') finished = 1;
+    if (word[0] == 0) {
+      finished = 1;
+      break;
+    }
 
-    int found = 0;
+    found = 0;
     k = 0;
-    while (k < DICT_LEN && dictionary[k].pagenum[0] > -1) {
-      if (dictionary[k].word == word) {
-        while (j < MEMBER_LEN && !dictionary[k].pagenum[j]) {
+    // registering
+    while (k < DICT_LEN && !found) {
+      if (!strcmp(dictionary[k].word, word)) {
+        found = 1;
+        printf("found\n");
+        j = 0;
+        while (j < MEMBER_LEN && dictionary[k].pagenum[j] != -1) {
           j++;
         }
+        dictionary[k].pagenum[j] = pagenum;
+        break;
       }
-      dictionary[k].pagenum[j] = pagenum;
-      j = 0;
       k++;
     }
+
     if (!found) {
+      k = 0;
+      while (k < DICT_LEN && dictionary[k].word[0] != 0) {
+        k++;
+      }
       strcpy(dictionary[k].word, word);
       dictionary[k].pagenum[0] = pagenum;
     }
-    // search for same word
 
-    word[0] = '\0';
+    word[0] = 0;
     i++;
   }
 
-
-
+  qsort(dictionary, MEMBER_LEN, sizeof(struct entry), cmpfunc);
+}
+void print_dict(struct entry * dictionary) {
+  int i, k;
   // print
-  printf("\nWord and page_no number in alphabetical order:\n");
+  printf("\nWord and page_no number:\n");
   i = 0;
-  k = 0;
   while (i < DICT_LEN && dictionary[i].pagenum[0] > -1) {
     printf("%s\n", dictionary[i].word);
+    k = 0;
     while (k < MEMBER_LEN && dictionary[i].pagenum[k]) {
-      printf("%d ", * dictionary[i].pagenum);
+      if (dictionary[i].pagenum[k] != -1) {
+        printf("%d ", dictionary[i].pagenum[k]);
+      }
       k++;
     }
     printf("\n");
     i++;
   }
+}
+
+int main() {
+  struct entry dictionary[DICT_LEN];
+  // Initialization
+  initiate_dict(dictionary);
+  register_dict(dictionary);
+  print_dict(dictionary);
+
 
   return 0;
 }
