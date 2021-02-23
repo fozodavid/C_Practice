@@ -4,6 +4,10 @@
 
 #define LEN 20
 
+int recurse() {
+  return 1;
+}
+
 struct symbol {
   char data;
   struct symbol *next;
