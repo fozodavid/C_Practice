@@ -79,32 +79,35 @@ int evaluate(const struct symbol *start, int left) {
 int main() {
   struct symbol *root = NULL;
   struct symbol *head = NULL;
-  struct symbol *current = NULL; // clean this up
+  struct symbol *prev = NULL;
 
   char exp[LEN];
   printf("Input an exp using +, -, *, / operators:\n");
   scanf("%s", exp);
 
-  current = malloc(sizeof(struct symbol));
-  head = current;
-  root = current;
-  int s = 0;
+  head = malloc(sizeof(struct symbol));
+  root = head;
+  head -> data = exp[0];
+  prev = head;
+  head = head -> next;
+
+  int s = 1;
   while(exp[s] != '\0') {
     /* strcpy(sign, exp[s]); */
-    current -> data = exp[s];
-    current -> next = malloc(sizeof(struct symbol));
-    current = current -> next;
-    current -> prev = head;
-    head = current;
+    head = malloc(sizeof(struct symbol));
+    head -> data = exp[s];
+    head -> prev = prev;
+    prev = head;
+    head = head -> next;
     s++;
   }
 
-  current = root;
-  while(current) {
+  head = root;
+  while(head) {
     printf("This is a node: ");
 
-    printf("%p: %p %c %p\n", current, current -> prev, current -> data, current -> next);
-    current = current -> next;
+    printf("%p: %p %c %p\n", head, head -> prev, head -> data, head -> next);
+    head = head -> next;
   }
 
   /* printf("%d", evaluate(root, 0)); */
