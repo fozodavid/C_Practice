@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define LEN 7
 
@@ -8,7 +9,7 @@ int test(int arr[], int size) {
   int sum = 0;
   char repr[20];
   while (i < size) {
-    itoa(arr[i], repr, 10);
+    sprintf(repr, "%d", arr[i]);
     printf("%s\n", repr);
     i++;
   }
