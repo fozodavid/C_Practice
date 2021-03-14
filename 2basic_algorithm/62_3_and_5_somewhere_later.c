@@ -11,8 +11,8 @@ int test(int array[], int size) {
     i++;
   }
   return v5_next_to_5 || v5_almost_next_to_5;
-
 }
+
 
 int main() {
   int array1[SIZE] = {0,2,5,5,4};
