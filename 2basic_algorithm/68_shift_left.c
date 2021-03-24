@@ -11,7 +11,6 @@ void test(int arr[], int * ptr) {
     i++;
   }
 }
-
 int main() {
   int arr[LEN] = {1,2,3,4,5};
   int * ptr = NULL;
