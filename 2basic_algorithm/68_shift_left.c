@@ -11,11 +11,16 @@ void test(int arr[], int * ptr) {
     i++;
   }
 }
+
 int main() {
-  int arr[LEN] = {1,2,3,4,5};
+  int arr1[LEN] = {1,2,3,4,5};
+  int arr2[LEN] = {1,2,3,4,5};
+  int arr3[LEN] = {1,2,3,4,5};
   int * ptr = NULL;
 
-  test(arr, ptr);
+  test(arr1, ptr);
+  test(arr2, ptr);
+  test(arr3, ptr);
 
   int i = 0;
   while (i < LEN) {
