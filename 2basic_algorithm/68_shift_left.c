@@ -10,6 +10,7 @@ int main() {
 
   int arr[LEN] = {0,1,2,3,4};
   int * ptr = NULL;
+  int * ptr2 = NULL;
   ptr = malloc(sizeof(int) * LEN);
 
   test(arr, ptr);
