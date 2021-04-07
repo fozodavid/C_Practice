@@ -1,15 +1,23 @@
 #include <stdio.h>
 
+/* int main() { */
+  /* unsigned long myint; */
+  /* char mychar[8] = "1234567"; */
+
+  /* myint = (unsigned long)mychar; */
+  /* printf("%d\n\n", myint); */
+
+  /* return 0; */
+/* } */
+
 int main() {
-  signed short myint = 1;
-  printf("%d\n\n", sizeof(myint));
+  char buffer[120];
+  unsigned long ul;
 
-  for (int i = 0; i < 65000; i += 1000) {
-    printf("%10d", myint);
-    if (!(i % 10000)) printf("\n");
-    myint += 1000;
-  }
-  printf("%d\n");
+  printf("\nInput an unsigned number: ");
+  fgets(buffer, 120, stdin);
 
+  ul = strtoul(buffer, NULL, 0);
+  printf("Output: %lu\n\n", ul);
   return 0;
 }
