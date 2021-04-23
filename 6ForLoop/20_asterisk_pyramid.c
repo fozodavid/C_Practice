@@ -12,9 +12,8 @@ int main() {
     for (k = i; k < rows; k++) {
       printf(" ");
     }
-    for (k = 1; k <= i; k += 2) {
-      count++;
-      printf("*", count);
+    for (k = 1; k < (i * 4) - 1; k += 2) {
+      printf("*");
     }
     printf("\n");
   }
