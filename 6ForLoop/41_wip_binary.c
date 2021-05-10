@@ -5,6 +5,7 @@ int main() {
   int num;
   printf("Test Data: ");
   scanf("%d", &num);
+  printf("Hello there");
 
   for (int i = INT_MAX; i > 0; i /= 2) {
     if (i > 1) {
