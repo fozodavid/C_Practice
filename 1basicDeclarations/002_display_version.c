@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define PRINTMACRO(x) printf("%d\n", x)
+#define PRINTMACRO(x) printf("%ld\n", x)
 
 int main() {
 #if __STDC_VERSION__
