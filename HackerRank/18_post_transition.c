@@ -30,15 +30,17 @@ struct town
 typedef struct town town;
 
 void print_all_packages(town t) {
+  printf("%s:\n", t.name);
   int i, j;
   for (i = 0; i < t.offices_count; i++) {
+    printf("\t%d:\n", i);
     for (j = 0; j < t.offices[i].packages_count; j++) {
-      printf("%s ", t.offices[i].packages[j].id);
+      printf("\t\t%s\n", t.offices[i].packages[j].id);
     }
   }
-  printf("\n");
 }
 
+// TODO: doesn't send
 void send_all_acceptable_packages(town* source, int source_office_index, town* target, int target_office_index) {
   post_office s_office = source -> offices[source_office_index];
   post_office t_office = target -> offices[target_office_index];
@@ -46,8 +48,7 @@ void send_all_acceptable_packages(town* source, int source_office_index, town* t
   package temp = {id: "", weight: 0};
 
   int i, j;
-  // should have a stack
-  int * send_indexes = calloc(256, sizeof(int));
+  int * send_indexes = calloc(64, sizeof(int));
   int curr_send_i = 0;
   int total_packages = 0;
 
@@ -63,22 +64,26 @@ void send_all_acceptable_packages(town* source, int source_office_index, town* t
     }
   }
   total_packages = curr_send_i;
-  curr_send_i = 0;
+
+  t_office.packages = realloc(t_office.packages, (t_office.packages_count + total_packages) * sizeof(package));
+  for (i = 0; i < total_packages; i++) {
+    t_office.packages[t_office.packages_count + i] = s_office.packages[send_indexes[i]];
+  }
 
   for (i = 0; i < total_packages; i++) {
-    t_office.packages = realloc(t_office.packages, (s_office.packages_count + curr_send_i + 1) * sizeof(package));
-    t_office.packages[t_office.packages_count + i] = s_office.packages[send_indexes[curr_send_i]];
-    for (j = send_indexes[curr_send_i]; j < s_office.packages_count - 1; j++) {
+    for (j = send_indexes[i]; j < s_office.packages_count - i - 1; j++) {
       temp = s_office.packages[j];
       s_office.packages[j] = s_office.packages[j+1];
       s_office.packages[j+1] = temp;
     }
-    s_office.packages = realloc(s_office.packages, (s_office.packages_count - curr_send_i - 1) * sizeof(package));
-    curr_send_i++;
   }
 
-  t_office.packages_count += curr_send_i;
-  s_office.packages_count -= curr_send_i;
+  s_office.packages = realloc(s_office.packages, (s_office.packages_count - total_packages) * sizeof(package));
+  t_office.packages_count += total_packages;
+  s_office.packages_count -= total_packages;
+
+  source -> offices[source_office_index] = s_office;
+  target -> offices[target_office_index] = t_office;
   free(send_indexes);
 }
 
